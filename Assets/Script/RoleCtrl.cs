@@ -26,7 +26,7 @@ public class SkillAct : Act //技能行为
     public float CoolingTime; //冷却时间
     public float Cur_CoolingTime;
     public int DepleteMP;//消耗的能量
-    //public AllAttackBox allbox;//属于我这个行为的所有攻击盒子
+    public AllAttackBox allbox;//属于我这个行为的所有攻击盒子
     public virtual void Fire() { } //技能攻击逻辑
     public virtual void PlayEffect() { } //播放特效
     public virtual bool Is_CanActRun() { return true; } //该技能是否可以执行
@@ -43,57 +43,52 @@ public class SkillAct : Act //技能行为
     //注册攻击盒子事件和技能图标方法
     public virtual void InitAttackBoxEventAndSkill(ref RoleCtrl role, string act)
     {
-        // var skb = role.GetComponent<RoleSkill>();
-        // if (skb != null)
-        // {
-        //     if (skb.SkillKeyDataDic.ContainsKey(act))
-        //     {
-        //         //注册该技能
-        //         var skillData = skb.SkillKeyDataDic[act];
-        //         role.SkillDataDic.Add(act, new SkillKeyandimg
-        //         {
-        //             name = skillData.name,
-        //             icon = skillData.icon,//技能图标
-        //             SkillTime = skillData.SkillTime,//技能冷却时间
-        //             DepleteMP = skillData.DepleteMP,//技能消耗的魔法值
-        //             FirePoint = skillData.FirePoint,//技能释放位置
-        //             AttackBox = skillData.AttackBox,//全部攻击盒子
-        //         });
+        var skb = role.GetComponent<RoleSkill>();
+        if (skb != null)
+        {
+            if (skb.SkillKeyDataDic.ContainsKey(act))
+            {
+                //注册该技能
+                var skillData = skb.SkillKeyDataDic[act];
+                role.SkillDataDic.Add(act, new SkillKeyandimg
+                {
+                    name = skillData.name,
+                    icon = skillData.icon,//技能图标
+                    SkillTime = skillData.SkillTime,//技能冷却时间
+                    DepleteMP = skillData.DepleteMP,//技能消耗的魔法值
+                    FirePoint = skillData.FirePoint,//技能释放位置
+                    AttackBox = skillData.AttackBox,//全部攻击盒子
+                });
+                //注册攻击盒子事件
+                allbox = skillData.AttackBox.GetComponent<AllAttackBox>();
+                if (allbox != null)
+                {
+                    foreach (var box in allbox.AttackBoxList)
+                    {
+                        var boxhit = box.GetComponent<AttackBoxHit>();// ?? box.GetComponent<AttackBoxAnim>()?.attackBoxHit
+                        if (boxhit != null)
+                        {
+                            boxhit.attackBoxHit_Enter += AttackBoxHit_Enter;//攻击盒子单次伤害事件
+                            //boxhit.PersistentTargetEvent += PersistentTargetEvent;//攻击盒子持续检测的目标
+                            //boxhit.PersistentTargetHit += PersistentTargetEvent;//攻击盒子持续伤害事件
+                            //boxhit.PersistentTargetEnd += PersistentTargetEnd;//攻击盒子持续伤害结束
+                        }
 
-        //         //注册攻击盒子事件
-        //         allbox = skillData.AttackBox.GetComponent<AllAttackBox>();
-        //         if (allbox != null)
-        //         {
-        //             foreach (var box in allbox.AttackBoxList)
-        //             {
-        //                 var boxhit = box.GetComponent<AttackBoxHit>() ?? box.GetComponent<AttackBoxAnim>()?.attackBoxHit;
-        //                 if (boxhit != null)
-        //                 {
-        //                     boxhit.attackBoxHit_Enter += AttackBoxHit_Enter;//攻击盒子单次伤害事件
-        //                     boxhit.PersistentTargetEvent += PersistentTargetEvent;//攻击盒子持续检测的目标
-        //                     boxhit.PersistentTargetHit += PersistentTargetEvent;//攻击盒子持续伤害事件
-        //                     boxhit.PersistentTargetEnd += PersistentTargetEnd;//攻击盒子持续伤害结束
-        //                 }
+                    }
 
-        //             }
-        //         }
+                }
 
-        //         //技能冷却时间
-        //         CoolingTime = skillData.SkillTime;
-        //         Cur_CoolingTime = 0;
-        //         //技能消耗的能量
-        //         DepleteMP = skillData.DepleteMP;
-        //     }
-        // }
+            }
+        }
     }
     //攻击盒子逻辑
-    protected virtual void AttackBoxHit_Enter(Collider other, int AT) { }
+    protected virtual void AttackBoxHit_Enter(Collider2D other, int AT) { }
     //攻击盒子持续检测到的物体
-    //protected virtual void PersistentTargetEvent(Collider other, AttackBoxHit boxhit) { }
+    protected virtual void PersistentTargetEvent(Collider2D other, AttackBoxHit boxhit) { }
     //攻击盒子持续检测的伤害
-    protected virtual void PersistentTargetEvent(Collider other, int AT) { }
+    protected virtual void PersistentTargetEvent(Collider2D other, int AT) { }
     //攻击盒子持续盒子结束
-    //protected virtual void PersistentTargetEnd(AttackBoxHit boxHit) { }
+    protected virtual void PersistentTargetEnd(AttackBoxHit boxHit) { }
 }
 
 
@@ -207,8 +202,25 @@ public class RoleCtrl : MonoBehaviour //角色控制父类
     //注册动画事件
     public virtual void RegistAnimEvent()
     {
+        var AnimEvent = Ani.GetComponent<AnimatorEvent>();
+        AnimEvent.FireEvent += ActFire;
+        AnimEvent.OnActToidle += ActToidle;
+    }
+    //攻击
+    protected virtual void ActFire()
+    {
+        if (CurAct is SkillAct skillAct)
+        {
+            skillAct.Fire();
+        }
+
+
 
     }
-
-
+    //动画转换idle
+    void ActToidle()
+    {
+        Next = "idle";
+        Is_ChangeAct = true;
+    }
 }

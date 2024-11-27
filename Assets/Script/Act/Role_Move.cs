@@ -45,7 +45,7 @@ public class Role_Move : Act //角色移动行为
     }
     public override void SkillFireKey(bool fire) //行为的按键
     {
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
             role.Next = "Move";
     } 
 }
