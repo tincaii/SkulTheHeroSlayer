@@ -47,13 +47,13 @@ public class Hero : RoleCtrl //玩家控制角色
         act = new Role_Reborn(this);
         act.Enter();
         ActMap.Add("Reborn", act);
+        
+        act.Init();
+        CurAct = act; //该动作初始化动作
 
         act = new Role_idle(this);
         act.Enter();
         ActMap.Add("idle", act);
-
-        act.Init();
-        CurAct = act; //该动作初始化动作
 
         act = new Role_Move(this);
         act.Enter();
