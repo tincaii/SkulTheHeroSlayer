@@ -72,6 +72,7 @@
     <Compile Include="Assets\Script\RoleSkill.cs" />
     <Compile Include="Assets\Script\Player\Act\Player_Attack.cs" />
     <Compile Include="Assets\Script\Player\Hero.cs" />
+    <Compile Include="Assets\Script\Act\Role_Reborn.cs" />
     <Compile Include="Assets\Script\Act\Role_idle.cs" />
     <Compile Include="Assets\Script\RoleSX.cs" />
   </ItemGroup>
