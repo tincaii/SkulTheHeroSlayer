@@ -6,39 +6,39 @@ using UnityEngine;
 public class Player_Attack : SkillAct //英雄的攻击行为
 {
 
-    protected RoleCtrl role;
-    public Player_Attack(RoleCtrl role)
+    protected RoleCtrl role;//角色控制器，用于访问角色数据和操作
+    public Player_Attack(RoleCtrl role)//构造函数，接收角色控制器实例
     {
         this.role = role;
     }
 
 
-    public override void Enter() 
+    public override void Enter() //进入攻击状态时调用
     {
-        InitAttackBoxEventAndSkill(ref role, "Attack");
+        InitAttackBoxEventAndSkill(ref role, "Attack");//初始化攻击盒子事件和技能
         
     }
-    public override void Init() 
+    public override void Init() //初始化攻击行为
     {
-        allbox.gameObject.SetActive(true);
-        role.Ani.SetTrigger("Attack1");
-        role.Is_ChangeAct = false;
+        allbox.gameObject.SetActive(true);//激活攻击盒子
+        role.Ani.SetTrigger("Attack1");// 播放"Attack1" 动画
+        role.Is_ChangeAct = false;//设置角色不能切换行为
     }
-    public override void Run() 
+    public override void Run() //攻击行为运行逻辑
     {
 
 
         Debug.Log($"正在运行 Attack1");
     }
-    public override void End() 
+    public override void End() //结束攻击行为时调用
     { 
-        allbox.gameObject.SetActive(false);
-        allbox.CloseAllBoxes();
+        allbox.gameObject.SetActive(false);//关闭攻击盒子
+        allbox.CloseAllBoxes();//关闭所有攻击盒子
 
     }
     public override void Fire() //技能攻击逻辑
     {
-        var box = allbox.AttackBoxList.FirstOrDefault();
+        var box = allbox.AttackBoxList.FirstOrDefault();//激活第一个攻击盒子
         box.SetActive(true);
 
     } 

@@ -15,16 +15,16 @@ public class SkillKeyandimg //技能按钮功能以及图标
 }
 public class Act //动作
 {
-    public virtual void Enter() { }
-    public virtual void Init() { }
-    public virtual void Run() { }
-    public virtual void End() { }
+    public virtual void Enter() { }//行为进入时的逻辑
+    public virtual void Init() { }//初始化行为
+    public virtual void Run() { }//行为运行逻辑
+    public virtual void End() { }//行为结束逻辑
     public virtual void SkillFireKey(bool fire) { } //行为的按键
 }
 public class SkillAct : Act //技能行为
 {
     public float CoolingTime; //冷却时间
-    public float Cur_CoolingTime;
+    public float Cur_CoolingTime;//当前冷却时间
     public int DepleteMP;//消耗的能量
     public AllAttackBox allbox;//属于我这个行为的所有攻击盒子
     public virtual void Fire() { } //技能攻击逻辑
@@ -32,41 +32,46 @@ public class SkillAct : Act //技能行为
     public virtual bool Is_CanActRun() { return true; } //该技能是否可以执行
     public virtual bool SkillDepleteMP(ref RoleSX sx) //技能消耗能量
     {
-        if (sx.CurMP - DepleteMP < 0)
+        if (sx.CurMP - DepleteMP < 0)//判断能量是都足够
             return false;
         else
         {
-            sx.CurMP -= DepleteMP;
+            sx.CurMP -= DepleteMP;//消耗能量
             return true;
         }
     }
     //注册攻击盒子事件和技能图标方法
     public virtual void InitAttackBoxEventAndSkill(ref RoleCtrl role, string act)
     {
-        var skb = role.GetComponent<RoleSkill>();
+        var skb = role.GetComponent<RoleSkill>();//获取角色上的RoleSkill组件，用于访问技能数据
         if (skb != null)
         {
-            if (skb.SkillKeyDataDic.ContainsKey(act))
+            if (skb.SkillKeyDataDic.ContainsKey(act))//检查技能字典中是否包含指定技能名
             {
-                //注册该技能
-                var skillData = skb.SkillKeyDataDic[act];
-                role.SkillDataDic.Add(act, new SkillKeyandimg
+                var skillData = skb.SkillKeyDataDic[act];//获取指定技能的数据
+                if (!role.SkillDataDic.ContainsKey(act))// 检查键是否已存在
                 {
-                    name = skillData.name,
+                    // 只在键不存在时添加
+                    role.SkillDataDic.Add(act, new SkillKeyandimg //将技能数据注册到角色的SkillDataDic中，确保角色能访问该技能
+                    {
+                    name = skillData.name,//技能名
                     icon = skillData.icon,//技能图标
                     SkillTime = skillData.SkillTime,//技能冷却时间
                     DepleteMP = skillData.DepleteMP,//技能消耗的魔法值
                     FirePoint = skillData.FirePoint,//技能释放位置
                     AttackBox = skillData.AttackBox,//全部攻击盒子
-                });
-                //注册攻击盒子事件
+                    });
+                }
+                
+                //注册攻击盒子事件，并储存到allbox成员变量中
                 allbox = skillData.AttackBox.GetComponent<AllAttackBox>();
                 if (allbox != null)
                 {
-                    foreach (var box in allbox.AttackBoxList)
+                    foreach (var box in allbox.AttackBoxList)//遍历攻击盒子列表，为每个盒子注册相关事件
                     {
+                        //尝试获取攻击盒子的伤害事件组件
                         var boxhit = box.GetComponent<AttackBoxHit>();// ?? box.GetComponent<AttackBoxAnim>()?.attackBoxHit
-                        if (boxhit != null)
+                        if (boxhit != null)//如果获取成功，则为攻击事件注册回调方法
                         {
                             boxhit.attackBoxHit_Enter += AttackBoxHit_Enter;//攻击盒子单次伤害事件
                             //boxhit.PersistentTargetEvent += PersistentTargetEvent;//攻击盒子持续检测的目标

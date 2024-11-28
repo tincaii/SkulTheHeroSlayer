@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class AnimatorEvent : MonoBehaviour
 {
-    public event Action FireEvent;//攻击
-    public event Action OnActToidle;
+    public event Action FireEvent;//攻击事件
+    public event Action OnActToidle;//行为切换为idle
 
 
-    private void EvetFire()
+    private void EvetFire()//动画攻击事件触发
     {
-        FireEvent?.Invoke();
+        FireEvent?.Invoke();//如果有订阅者，触发FireEvent事件
 
     }
-    private void EventActToidle()
+    private void EventActToidle()//动画切换为idle触发
     {
-        OnActToidle?.Invoke();
+        OnActToidle?.Invoke();//如果有订阅者，触发EventActToidle事件
     }
 }
