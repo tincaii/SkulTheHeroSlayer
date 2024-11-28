@@ -43,6 +43,11 @@ public class Hero : RoleCtrl //玩家控制角色
     public override void InitAct() 
     {
         Act act;
+
+        act = new Role_Reborn(this);
+        act.Enter();
+        ActMap.Add("Reborn", act);
+
         act = new Role_idle(this);
         act.Enter();
         ActMap.Add("idle", act);
@@ -57,6 +62,7 @@ public class Hero : RoleCtrl //玩家控制角色
         act = new Player_Attack(this);
         act.Enter();
         ActMap.Add("Attack", act);
+
 
     }
 
