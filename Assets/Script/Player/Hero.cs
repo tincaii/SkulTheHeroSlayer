@@ -63,7 +63,13 @@ public class Hero : RoleCtrl //玩家控制角色
         act.Enter();
         ActMap.Add("Attack", act);
 
+        act = new Role_Jump(this);
+        act.Enter();
+        ActMap.Add("Jump", act);
 
+        act = new Role_Fall(this);
+        act.Enter();
+        ActMap.Add("Fall", act);
     }
 
 }

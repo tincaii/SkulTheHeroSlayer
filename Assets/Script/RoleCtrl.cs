@@ -104,13 +104,14 @@ public class RoleCtrl : MonoBehaviour //角色控制父类
     [HideInInspector] public string Next = null;//角色下一个行为
     public Animator Ani;//角色动画
     public RoleSX sx; //角色属性
+    public Rigidbody2D rb;
     [HideInInspector] public bool Is_ChangeAct = true; //是否可以切换行为
     public Dictionary<string, SkillKeyandimg> SkillDataDic = new(); //角色技能列表
     [Header("角色头像")] public Sprite Avatar;
     virtual public void Awake()
     {
-        //获得技能数据
-        var skillkeydata = GetComponent<RoleSkill>() ?? null;
+        rb = GetComponent<Rigidbody2D>();// 获取 Rigidbody2D 组件并赋值给 rb
+        var skillkeydata = GetComponent<RoleSkill>() ?? null;//获得技能数据
         skillkeydata?.InitSkillData();
         //加载行为
         InitAct();
