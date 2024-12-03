@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 365321896}
   - component: {fileID: 365321899}
   - component: {fileID: 365321898}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Square
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -474,7 +474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 630475644}
   - component: {fileID: 630475645}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -661,7 +661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1223355140}
   - component: {fileID: 1223355141}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -749,7 +749,7 @@ GameObject:
   - component: {fileID: 1474096006}
   - component: {fileID: 1474096005}
   - component: {fileID: 1474096004}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -858,6 +858,7 @@ MonoBehaviour:
   AT: 5
   MoveSpeed: 2
   Jumpingpower: 0
+  isGrounded: 0
 --- !u!114 &1474096006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -876,6 +877,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   Is_ChangeAct: 1
   Avatar: {fileID: 0}
+  JumpCount: 0
 --- !u!50 &1474096007
 Rigidbody2D:
   serializedVersion: 4
@@ -902,7 +904,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1598661609
 GameObject:
   m_ObjectHideFlags: 0
@@ -1102,7 +1104,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1902856806
 Transform:
   m_ObjectHideFlags: 0
