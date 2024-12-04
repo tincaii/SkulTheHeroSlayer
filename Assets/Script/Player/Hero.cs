@@ -80,26 +80,47 @@ public class Hero : RoleCtrl //玩家控制角色
     // 当角色与地面发生碰撞时
     void OnCollisionStay2D(Collision2D collision)
     {
-        // 检测角色是否与地面发生接触
-        if (collision.gameObject.CompareTag("Ground"))
+        // 判断与地面发生碰撞
+    if (collision.gameObject.CompareTag("Ground"))
+    {
+        Ani.SetBool("DropJump",false);
+        // 遍历碰撞接触点，检查是否有接触点在底部
+        foreach (ContactPoint2D contact in collision.contacts)
         {
-            sx.isGrounded = true; // 角色与地面接触，设置为在地面上
-            if (JumpCount > 0)
+            if (contact.normal.y > 0) // 只有接触点的法线朝上的才是底部接触
             {
-                JumpCount = 0; // 重置跳跃计数
+                sx.isGrounded = true; // 角色与地面接触，设置为在地面上
+                if (JumpCount > 0)
+                {
+                    JumpCount = 0; // 重置跳跃计数
+                }
+                Debug.Log("角色与地面发生碰撞");
+                break; // 找到底部接触点后就退出循环
             }
-            Debug.Log("角色与地面发生碰撞");
         }
+    }
     }
     // 当角色离开地面时
     void OnCollisionExit2D(Collision2D collision)
     {
-        Debug.Log("角色离开地面");
+
         // 离开地面时，设置为不在地面上
         if (collision.gameObject.CompareTag("Ground"))
         {
+            Debug.Log("角色离开地面");
+            Ani.SetBool("DropJump",true);
+            sx.isDropJump=true;//开始跳跃
             sx.isGrounded = false;
         }
     }
-
+    private void FixedUpdate() 
+    {
+        // 检查是否开始下落（竖直速度为负）
+        if (rb.velocity.y < 0 && !Ani.GetBool("Fall"))
+        {
+            sx.isDropJump=false;//开始下落
+            Ani.SetBool("Jump", false); // 停止跳跃动画
+            Next = "Fall"; // 切换到下落状态
+        }
+    }
 }

@@ -13,7 +13,7 @@ public class Role_Jump : Act //角色的跳跃
     public override void Enter() //行为进入时的逻辑
     {
         role .sx.isGrounded=true;
-        role.sx.Jumpingpower=1f;// 跳跃力量的初始值
+        role.sx.Jumpingspeed=1.5f;// 跳跃力量的初始值
     }
     public override void Init() //初始化行为
     { 
@@ -23,6 +23,7 @@ public class Role_Jump : Act //角色的跳跃
     public override void Run() //行为运行逻辑
     { 
         Debug.Log($"正在运行 Jump");
+        
     }
     public override void End() //行为结束逻辑
     { 
@@ -42,7 +43,7 @@ public class Role_Jump : Act //角色的跳跃
         //     }
         //     role.Next = "Jump";
         // }
-
+        
     } 
 
 }

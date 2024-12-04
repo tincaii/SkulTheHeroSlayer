@@ -24,6 +24,6 @@ public class Role_Reborn : Act//角色复活动画
     }
     public override void End() //行为结束逻辑
     { 
-        role.Is_ChangeAct = true;//设置角色不能切换行为
+        role.Is_ChangeAct = true;//设置角色能切换行为
     }
 }
