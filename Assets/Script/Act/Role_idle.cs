@@ -16,7 +16,11 @@ public class Role_idle : Act //角色的idle
     }
     public override void Init() 
     {
-        role.Ani.SetBool("idle", true);
+        if(role.sx.isGrounded==true)
+        {
+            role.Ani.SetBool("idle", true);
+        }
+
         role.Ani.SetBool("Move", false);
 
     }
@@ -26,7 +30,7 @@ public class Role_idle : Act //角色的idle
     }
     public override void End() 
     { 
-
+        role.Ani.SetBool("idle", false);
     }
 
 }

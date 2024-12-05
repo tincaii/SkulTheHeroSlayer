@@ -35,6 +35,12 @@ public class Role_Move : Act //角色移动行为
             Scale.x *= -1; 
             role.transform.localScale = Scale;
         }
+        // 如果角色处于空中，切换到下落状态
+        if (!role.sx.isGrounded && role.Next != "Fall") 
+        {
+            role.Next = "Fall"; // 切换到下落
+        }
+        // 如果没有移动，切换到 idle 状态
         if (movement.sqrMagnitude == 0)
         {
             role.Next = "idle";
@@ -42,7 +48,7 @@ public class Role_Move : Act //角色移动行为
     }
     public override void End()
     {
-
+        role.Ani.SetBool("Move", false);
     }
     public override void SkillFireKey(bool fire) //行为的按键
     {
@@ -52,10 +58,6 @@ public class Role_Move : Act //角色移动行为
             {
                 role.Next = "Move";
             }
-        }
-        else if(role.sx.isGrounded==false)//当玩家离开地面的时候
-        {
-            role.Next="Fall";
         }
 
     } 

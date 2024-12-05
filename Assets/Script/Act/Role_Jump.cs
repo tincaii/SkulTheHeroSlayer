@@ -23,6 +23,17 @@ public class Role_Jump : Act //角色的跳跃
     public override void Run() //行为运行逻辑
     { 
         Debug.Log($"正在运行 Jump");
+
+        var movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));//GetAxisRaw
+        var pos = role.transform.position;
+        pos.x += movement.normalized.x * role.sx.MoveSpeed * Time.deltaTime;
+        role.transform.position = pos;
+        if ((movement.x < 0 && role.transform.localScale.x > 0) || (movement.x > 0 && role.transform.localScale.x < 0))
+        {
+            var Scale = role.transform.localScale;
+            Scale.x *= -1;
+            role.transform.localScale = Scale;
+        }
         
     }
     public override void End() //行为结束逻辑

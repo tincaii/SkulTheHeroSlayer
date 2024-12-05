@@ -15,7 +15,7 @@ public class Player_Jump : Role_Jump //英雄的跳跃行为
         // 在跳跃时，按 K 键触发跳跃
         if (Input.GetKeyDown(KeyCode.K) && (role .sx.isGrounded || hero.JumpCount < 1)) 
         {
-            role.Ani.SetBool("DropJump",false);
+            role.sx.isDropJump=false;//开始跳跃
             if (hero.JumpCount < 1) // 双重跳跃逻辑
             {
                 role.rb.velocity = new Vector2(role.rb.velocity.x, 0); // 重置竖直速度
@@ -23,7 +23,7 @@ public class Player_Jump : Role_Jump //英雄的跳跃行为
                 hero.JumpCount++; // 增加跳跃计数
             }
             role.Next = "Jump";
-        }
+        } 
         
     }
 

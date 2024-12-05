@@ -83,13 +83,14 @@ public class Hero : RoleCtrl //玩家控制角色
         // 判断与地面发生碰撞
     if (collision.gameObject.CompareTag("Ground"))
     {
-        Ani.SetBool("DropJump",false);
+
         // 遍历碰撞接触点，检查是否有接触点在底部
         foreach (ContactPoint2D contact in collision.contacts)
         {
             if (contact.normal.y > 0) // 只有接触点的法线朝上的才是底部接触
             {
-                sx.isGrounded = true; // 角色与地面接触，设置为在地面上
+                Ani.SetBool("DropJump",true);
+                sx.isGrounded = true; // 角色在地面
                 if (JumpCount > 0)
                 {
                     JumpCount = 0; // 重置跳跃计数
@@ -103,14 +104,12 @@ public class Hero : RoleCtrl //玩家控制角色
     // 当角色离开地面时
     void OnCollisionExit2D(Collision2D collision)
     {
-
         // 离开地面时，设置为不在地面上
         if (collision.gameObject.CompareTag("Ground"))
         {
             Debug.Log("角色离开地面");
-            Ani.SetBool("DropJump",true);
-            sx.isDropJump=true;//开始跳跃
-            sx.isGrounded = false;
+            Ani.SetBool("DropJump",false);
+            sx.isGrounded = false;// 角色在空中
         }
     }
     private void FixedUpdate() 
@@ -118,9 +117,10 @@ public class Hero : RoleCtrl //玩家控制角色
         // 检查是否开始下落（竖直速度为负）
         if (rb.velocity.y < 0 && !Ani.GetBool("Fall"))
         {
-            sx.isDropJump=false;//开始下落
-            Ani.SetBool("Jump", false); // 停止跳跃动画
+            Ani.SetBool("DropJump",true);
+            sx.isDropJump=true;//开始下落
             Next = "Fall"; // 切换到下落状态
         }
     }
+
 }

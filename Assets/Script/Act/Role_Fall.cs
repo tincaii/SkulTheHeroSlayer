@@ -20,10 +20,6 @@ public class Role_Fall : Act //角色的下落
     public override void Run() //行为运行逻辑
     { 
         Debug.Log($"正在运行 Fall");
-        if(role.sx.isGrounded==true)
-        {
-            role.Next="idle";
-        }
         var movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));//GetAxisRaw
         var pos = role.transform.position;
         pos.x += movement.normalized.x * role.sx.MoveSpeed * Time.deltaTime;
@@ -34,6 +30,11 @@ public class Role_Fall : Act //角色的下落
             Scale.x *= -1;
             role.transform.localScale = Scale;
         }
+        if(role.sx.isGrounded==true)
+        {
+            role.Next="idle";
+        }
+        
     }
     public override void End() //行为结束逻辑
     { 
